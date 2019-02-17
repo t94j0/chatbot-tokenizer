@@ -1,1 +1,1 @@
-name = "discordtokenizer"
+from .tokenizer import Tokenizer
