@@ -1,6 +1,6 @@
 import unittest
 
-from discordtokenizer import Tokenizer
+from chatbottokenizer import Tokenizer
 
 
 class MyTest(unittest.TestCase):

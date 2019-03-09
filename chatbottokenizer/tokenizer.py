@@ -1,13 +1,27 @@
 class Tokenizer:
     DELIMITER = ' '
 
-    def __init__(self, inp: str):
+    last_tmpl = ''
+
+    def __init__(self, name: str, inp: str):
         self.tokens = inp.split(self.DELIMITER)
-        self.last_tmpl = ''
+        self.name = name
+
+    def to_bot(self) -> bool:
+        """
+        If the bot name is the first word, then return True
+        """
+        return self.tokens[0] == self.name
+
+    def _split(self, inp: str) -> list:
+        """
+        Custom splitter that puts the name of the bot before all other strings
+        """
+        return [self.name] + inp.split(self.DELIMITER)
 
     def match(self, tmpl: str) -> bool:
         self.last_tmpl = tmpl
-        items = tmpl.split(self.DELIMITER)
+        items = self._split(tmpl)
         if len(self.tokens) < len(items):
             return False
         items = self._non_variables(tmpl)
@@ -19,7 +33,7 @@ class Tokenizer:
         Example:
         '!test start <name>' becomes '[!test, start]'
         """
-        items = items_str.split(self.DELIMITER)
+        items = self._split(items_str)
         items = [i for i in items if len(i) > 0]
         items = ['' if i.startswith('<') else i for i in items]
         items = self._remove_last_blanks(items)
@@ -34,7 +48,7 @@ class Tokenizer:
                 return items[::-1][i:][::-1]
 
     def items(self) -> dict:
-        template = self.last_tmpl.split(self.DELIMITER)
+        template = self._split(self.last_tmpl)
         non_vars = self._non_variables(self.last_tmpl)
 
         var = template[len(non_vars):]
