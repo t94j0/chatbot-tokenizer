@@ -2,16 +2,16 @@
 
 ## Setup
 
-TODO
+`pip3 install -U chatbottokenizer`
 
 ## Usage
 
 ```py
-from tokenizer import Tokenizer
+from chatbottokenizer import Tokenizer
 
 INPUT_STRING = '!bot create george'
-tokens = Tokenizer(INPUT_STRING)
-if tokens.match('!bot create <name>'):
+tokens = Tokenizer('!bot', INPUT_STRING)
+if tokens.match('create <name>'):
   items = tokens.items()
   print('Name is: {}'.format(items['name']))
 ```
